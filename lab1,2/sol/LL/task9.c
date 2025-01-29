@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<sys/time.h>
 
 typedef struct Node* NODE;
 struct Node{
@@ -72,6 +73,11 @@ int hasCycle(LIST l){
 
 void main(){
 
+    struct timeval t1,t2;
+    double time_taken;
+
+    gettimeofday(&t1, NULL);
+
     LIST sl = createNewList();
 
     for(int i = 7 ; i >= 1 ; i--){
@@ -115,4 +121,11 @@ void main(){
 
     if(hasCycle(ccl)) printf("circular Linked list has cycle!\n");
     else printf("circular linked list has no cycle!\n");
+
+    gettimeofday(&t2, NULL);
+
+    time_taken = (t2.tv_sec - t1.tv_sec)*1e6;
+    time_taken = (time_taken + (t2.tv_usec - t1.tv_usec)) * 1e-6;
+
+    printf("\nThe tasks took %f seconds to exectue!\n",time_taken);
 }
