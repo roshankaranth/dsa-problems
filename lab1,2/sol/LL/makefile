@@ -19,3 +19,12 @@ task8_exe : task8.o
 
 task8.o : task8.c
 		  gcc -c task8.c
+
+home_ex5 : home_ex5_exe
+		./home_ex5_exe
+
+home_ex5_exe : home_ex5.o
+			gcc -o home_ex5_exe home_ex5.o
+
+home_ex5.o : home_ex5.c
+		  gcc -c home_ex5.c
