@@ -37,3 +37,13 @@ home_ex6_exe : home_ex6.o
 
 home_ex6.o : home_ex6.c
 		  gcc -c home_ex6.c
+
+task9 : task9_exe
+		./task9_exe
+
+task9_exe : task9.o
+			gcc -o task9_exe task9.o
+
+task9.o : task9.c 
+		  gcc -c task9.c 
+
