@@ -1,6 +1,7 @@
 clean : 
 		rm *.o
 		rm *_exe
+		rm *.out
 
 task4 : task4_exe
 		./task4_exe
