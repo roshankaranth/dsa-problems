@@ -28,3 +28,12 @@ home_ex3_exe : home_ex3.o
 
 home_ex3.o : home_ex3.c
 		  gcc -c home_ex3.c
+
+home_ex4 : home_ex4_exe
+		./home_ex4_exe
+
+home_ex4_exe : home_ex4.o
+			gcc -o home_ex4_exe home_ex4.o
+
+home_ex4.o : home_ex4.c
+		  gcc -c home_ex4.c
