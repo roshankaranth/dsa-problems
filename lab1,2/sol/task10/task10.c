@@ -25,9 +25,8 @@ typedef struct list{
 
 typedef list* LIST;
 
-void dataDMA(){
+void dataDMA(STUDENT ptr){
 
-    STUDENT ptr = (STUDENT)malloc(sizeof(student)*TOTAL_STUDENTS);
     FILE* fptr = fopen("../../data.txt","r");
     char line[100];
     int student = 0;
@@ -48,9 +47,8 @@ void insertNode(NODE n, LIST l){
     n->next = temp;
 }
 
-void dataLL(){
+void dataLL(LIST l){
 
-    LIST l = (LIST)malloc(sizeof(list));
     FILE* fptr = fopen("../../data.txt","r");
     char line[100];
     int student = 0;
@@ -65,6 +63,47 @@ void dataLL(){
 
 }
 
+void updateData_DA(student record[], int pos[], STUDENT ptr){
+    
+    ptr = (STUDENT)realloc(ptr,sizeof(student)*(TOTAL_STUDENTS + 10 ));
+    int size = TOTAL_STUDENTS + 10;
+    
+    for(int i = 0 ; i < 10; i++){
+        for(int j = size-10-1+i ; j>=pos[i] ; j-- ){
+            ptr[j+1].CGPA = ptr[j].CGPA;
+            strcpy(ptr[j+1].ID, ptr[j].ID);
+        }
+
+        ptr[pos[i]].CGPA = record[i].CGPA;
+        strcpy(ptr[pos[i]].ID, record[i].ID);
+
+    }
+
+}
+
+void updateData_LL(student record[], int pos[], LIST l){
+
+     for(int i = 0 ; i < 10; i++){
+        int ctr = 0;
+        NODE ptr = l->head;
+        NODE prev = NULL;
+        while(ptr!=NULL){
+            if(ctr==pos[i]) break;
+            prev = ptr;
+            ptr = ptr->next;
+            ctr++;
+        }
+
+        NODE n = (NODE)malloc(sizeof(node));
+        n->cgpa = record[i].CGPA;
+        strcpy(n->ID,record[i].ID);
+        n->next = ptr;
+        prev->next = n;
+
+    }
+
+}
+
 
 void main(void){
 
@@ -72,11 +111,11 @@ void main(void){
     double time_taken_DA;
     double time_taken_LL;
 
-
+    STUDENT ptr = (STUDENT)malloc(sizeof(student)*TOTAL_STUDENTS);
     printf("Reading and writing data into dynamic array.\n");
 
     gettimeofday(&t1,NULL);
-    dataDMA();
+    dataDMA(ptr);
     gettimeofday(&t2,NULL);
 
     time_taken_DA = (t2.tv_sec - t1.tv_sec) * 1e6;
@@ -84,10 +123,10 @@ void main(void){
     
     printf("Reading and writing to dynamic array took %f second\n\n", time_taken_DA);
 
-
+    LIST l = (LIST)malloc(sizeof(list));
     printf("Reading and writing data into LL.\n");
     gettimeofday(&t1,NULL);
-    dataLL();
+    dataLL(l);
     gettimeofday(&t2,NULL);
 
     time_taken_LL = (t2.tv_sec - t1.tv_sec) * 1e6;
@@ -95,10 +134,34 @@ void main(void){
 
     printf("Reading and writing to linked list took %f second\n", time_taken_LL);
 
+    printf("\nEnter 10 new entries, and the index of insertion\n");
+    student record[10];
+    int pos[10];
+    for(int i = 0 ;  i < 10 ; i++){
+        scanf("%s %f %d", record[i].ID, &record[i].CGPA, &pos[i]);
+    }
 
+    printf("\nInserting records into dynamic array\n");
+    gettimeofday(&t1,NULL);
+    updateData_DA(record, pos, ptr);
+    gettimeofday(&t2,NULL);
 
+    time_taken_DA = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_DA = (time_taken_DA + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+    
+    printf("Inserting to dynamic array took %f second\n\n", time_taken_DA);
 
+    printf("Inserting records into linkedlist\n");
+    gettimeofday(&t1,NULL);
+    updateData_LL(record,pos,l);
+    gettimeofday(&t2,NULL);
 
+    time_taken_LL = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_LL = (time_taken_LL + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+
+    printf("Inserting to linked list took %f second\n", time_taken_LL);
 
 
 }
+
+//inside a function, the array when passed, is passed as a pointer. thus when we do sizeof() it gives size of pointer and not the array.
