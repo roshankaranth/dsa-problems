@@ -6,3 +6,7 @@ task10_exe : task10.o
 
 task10.o : task10.c
 	gcc -c task10.c
+
+make clean:
+	rm *.o
+	rm *_exe
