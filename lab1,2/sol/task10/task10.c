@@ -35,6 +35,7 @@ void dataDMA(STUDENT ptr){
         strcpy(ptr[student].ID, token);
         token = strtok(NULL,",");
         ptr[student].CGPA = atof(token);
+        student++;
     }
 
     fclose(fptr);
@@ -45,13 +46,13 @@ void insertNode(NODE n, LIST l){
     NODE temp = l->head;
     l->head = n;
     n->next = temp;
+    l->count++;
 }
 
 void dataLL(LIST l){
 
     FILE* fptr = fopen("../../data.txt","r");
     char line[100];
-    int student = 0;
     while(fgets(line,100,fptr)){
         NODE n = (NODE)malloc(sizeof(node));
         char* token = strtok(line,",");
@@ -67,7 +68,6 @@ void updateData_DA(student record[], int pos[], STUDENT ptr){
     
     ptr = (STUDENT)realloc(ptr,sizeof(student)*(TOTAL_STUDENTS + 10 ));
     int size = TOTAL_STUDENTS + 10;
-    
     for(int i = 0 ; i < 10; i++){
         for(int j = size-10-1+i ; j>=pos[i] ; j-- ){
             ptr[j+1].CGPA = ptr[j].CGPA;
@@ -88,7 +88,7 @@ void updateData_LL(student record[], int pos[], LIST l){
         NODE ptr = l->head;
         NODE prev = NULL;
         while(ptr!=NULL){
-            if(ctr==pos[i]) break;
+            if(ctr==(TOTAL_STUDENTS + 10 -1) - pos[i]) break;
             prev = ptr;
             ptr = ptr->next;
             ctr++;
@@ -98,12 +98,34 @@ void updateData_LL(student record[], int pos[], LIST l){
         n->cgpa = record[i].CGPA;
         strcpy(n->ID,record[i].ID);
         n->next = ptr;
-        prev->next = n;
-
+        if(prev!=NULL)prev->next = n;
+        else l->head = n;
+        l->count++;
     }
 
 }
 
+void getData_LL(int pos, LIST l){
+
+    NODE ptr = l->head;
+    int ctr = 0;
+    while(ptr != NULL){
+        if(ctr==(TOTAL_STUDENTS + 10 -1) - pos) break;
+        ptr = ptr->next;
+        ctr++;
+    }
+
+    printf("Students ID : %s\n", ptr->ID);
+    printf("Students CGPA : %f\n", ptr->cgpa);
+
+}
+
+void getData_DA(int pos, STUDENT ptr){
+    
+    printf("Students ID : %s\n", ptr[pos].ID);
+    printf("Students CGPA : %f\n", ptr[pos].CGPA);
+
+}
 
 void main(void){
 
@@ -124,6 +146,8 @@ void main(void){
     printf("Reading and writing to dynamic array took %f second\n\n", time_taken_DA);
 
     LIST l = (LIST)malloc(sizeof(list));
+    l->count = 0;
+    l->head = NULL;
     printf("Reading and writing data into LL.\n");
     gettimeofday(&t1,NULL);
     dataLL(l);
@@ -161,6 +185,29 @@ void main(void){
 
     printf("Inserting to linked list took %f second\n", time_taken_LL);
 
+    int x = 0;
+    printf("\nEnter position for data retrival (0-10009) : ");
+    scanf("%d", &x);
+
+    printf("\nFetching record from dynamic array\n");
+    gettimeofday(&t1,NULL);
+    getData_DA(x, ptr);
+    gettimeofday(&t2,NULL);
+
+    time_taken_DA = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_DA = (time_taken_DA + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+
+    printf("Fetching data from dynamic array took %f second\n", time_taken_DA);
+
+    printf("\nFetching record from linked list\n");
+    gettimeofday(&t1,NULL);
+    getData_LL(x,l );
+    gettimeofday(&t2,NULL);
+
+    time_taken_LL = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_LL = (time_taken_LL + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+
+    printf("Fetching data from linked list took %f second\n", time_taken_LL);
 
 }
 
