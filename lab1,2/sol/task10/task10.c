@@ -105,7 +105,7 @@ void updateData_LL(student record[], int pos[], LIST l){
 
 }
 
-void getData_LL(int pos, LIST l){
+NODE getData_LL(int pos, LIST l){
 
     NODE ptr = l->head;
     int ctr = 0;
@@ -115,16 +115,41 @@ void getData_LL(int pos, LIST l){
         ctr++;
     }
 
-    printf("Students ID : %s\n", ptr->ID);
-    printf("Students CGPA : %f\n", ptr->cgpa);
+    return ptr;
+}
+
+STUDENT getData_DA(int pos, STUDENT ptr){
+    
+    return &ptr[pos]; 
 
 }
 
-void getData_DA(int pos, STUDENT ptr){
-    
-    printf("Students ID : %s\n", ptr[pos].ID);
-    printf("Students CGPA : %f\n", ptr[pos].CGPA);
+void deleteData_DA(STUDENT ptr){
 
+    for(int i = 0 ; i < TOTAL_STUDENTS + 10 ; i++){
+        ptr[i].CGPA = 0;
+        strcpy(ptr[i].ID, "");
+    }
+
+    free(ptr);
+    ptr = NULL;
+
+}
+
+void deleteData_LL(LIST l){
+
+    NODE ptr = l->head;
+    NODE prev = NULL;
+    while(ptr!=NULL){
+        prev = ptr;
+        ptr = ptr->next;
+        free(prev);
+
+    }
+
+    free(l);
+    prev = NULL;
+    l = NULL;
 }
 
 void main(void){
@@ -191,8 +216,11 @@ void main(void){
 
     printf("\nFetching record from dynamic array\n");
     gettimeofday(&t1,NULL);
-    getData_DA(x, ptr);
+    STUDENT s = getData_DA(x, ptr);
     gettimeofday(&t2,NULL);
+
+    printf("Students ID : %s\n", s->ID);
+    printf("Students CGPA : %f\n", s->CGPA);
 
     time_taken_DA = (t2.tv_sec - t1.tv_sec) * 1e6;
     time_taken_DA = (time_taken_DA + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
@@ -201,13 +229,37 @@ void main(void){
 
     printf("\nFetching record from linked list\n");
     gettimeofday(&t1,NULL);
-    getData_LL(x,l );
+    NODE sn = getData_LL(x,l );
     gettimeofday(&t2,NULL);
+
+    printf("Students ID : %s\n", sn->ID);
+    printf("Students CGPA : %f\n", sn->cgpa);
 
     time_taken_LL = (t2.tv_sec - t1.tv_sec) * 1e6;
     time_taken_LL = (time_taken_LL + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
 
     printf("Fetching data from linked list took %f second\n", time_taken_LL);
+
+    printf("\nDeleting entries from dynamic array\n");
+    gettimeofday(&t1,NULL);
+    deleteData_DA(ptr);
+    gettimeofday(&t2,NULL);
+
+    time_taken_DA = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_DA = (time_taken_DA + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+
+    printf("Deleting data from dynamic array took %f second\n", time_taken_DA);
+
+    printf("\nDeleting entries from linked list\n");
+    gettimeofday(&t1,NULL);
+    deleteData_LL(l);
+    gettimeofday(&t2,NULL);
+
+    time_taken_LL = (t2.tv_sec - t1.tv_sec) * 1e6;
+    time_taken_LL = (time_taken_LL + (t2.tv_usec - t1.tv_usec)) * 1e-6; 
+    
+    printf("Deleting data from dynamic array took %f second\n", time_taken_LL);
+
 
 }
 
