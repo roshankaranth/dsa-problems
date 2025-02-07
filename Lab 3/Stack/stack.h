@@ -3,6 +3,7 @@
 
 #include "element.h"
 #include <stdbool.h>
+#include "heap_usage.h"
 
 typedef struct Stack Stack; // Stack is a pointer to a struct stack
 

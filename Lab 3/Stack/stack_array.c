@@ -9,7 +9,7 @@ struct Stack{
 };
 
 Stack* newStack(){
-    Stack* s = (Stack*)malloc(sizeof(Stack));
+    Stack* s = (Stack*)myalloc(sizeof(Stack));
     if(s!=NULL){
         s->top = -1;
     }
@@ -39,5 +39,5 @@ bool isEmpty(Stack* s){
 }
 
 void freeStack(Stack* s){
-    free(s);
+    myfree(s);
 }

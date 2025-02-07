@@ -3,6 +3,7 @@
 
 #include "element.h"
 #include <stdlib.h>
+#include "heap_usage.h"
 
 struct node
 {

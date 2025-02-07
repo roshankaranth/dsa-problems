@@ -1,7 +1,8 @@
 #include "linked_list.h"
 
+
 LIST createNewList(){
-    LIST l = (LIST)malloc(sizeof(linked_list));
+    LIST l = (LIST)myalloc(sizeof(linked_list));
     if(l != NULL) {
         l->count = 0;
         l->head = NULL;
@@ -11,7 +12,7 @@ LIST createNewList(){
 }
 
 NODE createNewNode(Element data){
-    NODE n = (NODE)malloc(sizeof(node));
+    NODE n = (NODE)myalloc(sizeof(node));
     if(n!=NULL){
         n->next = NULL;
         n->data = data;
@@ -31,7 +32,7 @@ void removeFirstNode(LIST list){
     if(list->count == 0) return;
     NODE temp = list->head;
     list->head = temp->next;
-    free(temp);
+    myfree(temp);
     temp = NULL;
     list->count--;
 }
@@ -41,9 +42,9 @@ void destroyList(LIST list){
     while(ptr!=NULL){
         NODE curr = ptr;
         ptr = curr->next;
-        free(curr);
+        myfree(curr);
         curr = NULL;
     }
 
-    free(list);
+    myfree(list);
 }

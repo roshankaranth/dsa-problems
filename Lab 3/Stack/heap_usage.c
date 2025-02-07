@@ -1,6 +1,7 @@
 #include "heap_usage.h"
 #define ADDITIONAL_MEMORY sizeof(int)
 size_t heapMemoryAllocated = 0;
+
 void *myalloc(size_t size)
 {
     void *ptr = malloc(size + ADDITIONAL_MEMORY);

@@ -6,7 +6,7 @@ typedef struct Stack{
 }Stack;
 
 Stack* newStack(){
-    Stack* s = (Stack*)malloc(sizeof(Stack));
+    Stack* s = (Stack*)myalloc(sizeof(Stack));
     if(s!=NULL){
         s->data = createNewList();
     }
@@ -38,6 +38,6 @@ bool isEmpty(Stack* stack){
 
 void freeStack(Stack *stack){
     destroyList(stack->data);
-    free(stack);
+    myfree(stack);
     stack = NULL;
 }
