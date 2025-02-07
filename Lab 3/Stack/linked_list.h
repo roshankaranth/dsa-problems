@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include "element.h"
+#include <stdlib.h>
 
 struct node
 {
