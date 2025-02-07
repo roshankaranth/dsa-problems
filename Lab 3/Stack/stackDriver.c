@@ -15,6 +15,9 @@ int main()
     value = top(s)->int_value;
     printf("Top of stack is %d\n", value);
 
+    if(!isEmpty(s))
+        printf("Stack is not empty\n");
+
     value = top(s)->int_value;
     printf("Top of stack is %d\n", value);
     

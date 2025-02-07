@@ -15,7 +15,7 @@ bool push(Stack *stack, Element element);
 Element *top(Stack *stack); 
 // Returns a pointer to the top element. Returns NULL if stack is empty
 
-Element *pop(Stack *stack); 
+bool pop(Stack *stack); 
 // Pops the top element and returns true. Returns false if stack is empty
 
 bool isEmpty(Stack *stack);
