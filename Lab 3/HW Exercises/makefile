@@ -14,6 +14,19 @@ heap_usage.o : ../Stack/heap_usage.c
 linked_list.o : ../Stack/linked_list.c 
 	gcc -c ../Stack/linked_list.c
 
+runHome_Exercise : home_exercise4.o queue_ll.o linked_list_q.o
+	gcc -o home_exercise4_exe home_exercise4.o queue_ll.o linked_list.o
+	./home_exercise4_exe
+
+home_exercise4.o : home_exercise4.c 
+	gcc -c home_exercise4.c 
+
+queue_ll.o : queue_ll.c 
+	gcc -c queue_ll.c
+
+linked_list_q.o: linked_list.c 
+	gcc -c linked_list.c
+
 clean :
 	rm *.o
 	rm *_exe 
