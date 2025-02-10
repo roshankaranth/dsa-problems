@@ -2,6 +2,13 @@ runComputeSpan : computeSpan.o stack_ll.o heap_usage.o linked_list.o
 	gcc -o computeSpan_exe computeSpan.o stack_ll.o heap_usage.o linked_list.o
 	./computeSpan_exe
 
+runHome_Exercise2 : home_exercise2.o stack_ll.o heap_usage.o linked_list.o
+	gcc -o home_exercise2_exe home_exercise2.o stack_ll.o heap_usage.o linked_list.o
+	./home_exercise2_exe
+
+home_exercise2.o : home_exercise2.c 
+	gcc -c home_exercise2.c
+
 computeSpan.o : computeSpan.c
 	gcc -c computeSpan.c 
 
