@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "linked_list.h": "c",
+        "stack.h": "c",
+        "heap_usage.h": "c",
+        "element.h": "c",
+        "limits": "c"
     }
 }
