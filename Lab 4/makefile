@@ -1,3 +1,30 @@
+runMergeSortInsert : intMergeSort.o intMergeByInsert.o 
+	gcc -o MergeSort_exe intMergeSort.o intMergeByInsert.o 
+	./MergeSort_exe
+
+runMergeSortRec : intMergeSort.o intMerge.o intMergeAuxRec.o
+	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxRec.o
+	./MergeSort_exe
+
+runMergeSortIter : intMergeSort.o intMerge.o intMergeAuxIter.o
+	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxIter.o
+	./MergeSort_exe
+
+intMergeSort.o : intMergeSort.c 
+	gcc -c intMergeSort.c
+
+intMerge.o : intMerge.c
+	gcc -c intMerge.c
+
+intMergeAuxIter.o : intMergeAuxIter.c
+	gcc -c intMergeAuxIter.c
+
+intMergeAuxRec.o : intMergeAuxRec.c 
+	gcc -c intMergeAuxRec.c 
+
+intMergeByInsert.o : intMergeByInsert.c 
+	gcc -c intMergeByInsert.c
+
 runTask1 : task1.c
 	gcc -c task1.c
 	gcc -o task1_exe task1.o
