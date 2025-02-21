@@ -5,6 +5,8 @@
         "stack.h": "c",
         "heap_usage.h": "c",
         "element.h": "c",
-        "limits": "c"
+        "limits": "c",
+        "time.h": "c",
+        "personmerge.h": "c"
     }
 }
