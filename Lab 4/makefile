@@ -1,3 +1,11 @@
+runhomeExercise1 : homeExercise1.c
+	gcc -c homeExercise1.c
+	gcc -o homeExercise1_exe homeExercise1.o
+	./homeExercise1_exe dat1000.csv 1000
+	./homeExercise1_exe dat10000.csv 10000
+	./homeExercise1_exe dat100000.csv 100000
+	./homeExercise1_exe dat1000000.csv 1000000
+
 runExternalMergeSort : externalMergeSort.o personMergeAuxIter.o personMerge.o
 	gcc -o externalMergeSort_exe externalMergeSort.o personMerge.o personMergeAuxIter.o
 	./externalMergeSort_exe dat7578440.csv 1000000
