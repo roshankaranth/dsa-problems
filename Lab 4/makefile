@@ -14,16 +14,16 @@ personMerge.o : personMerge.c
 personMergeAuxIter.o : personMergeAuxIter.c
 	gcc -c personMergeAuxIter.c
 
-runMergeSortInsert : intMergeSort.o intMergeByInsert.o 
-	gcc -o MergeSort_exe intMergeSort.o intMergeByInsert.o 
+runMergeSortInsert : intMergeSort.o intMergeByInsert.o heap_usage.o
+	gcc -o MergeSort_exe intMergeSort.o intMergeByInsert.o heap_usage.o
 	./MergeSort_exe
 
-runMergeSortRec : intMergeSort.o intMerge.o intMergeAuxRec.o
-	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxRec.o
+runMergeSortRec : intMergeSort.o intMerge.o intMergeAuxRec.o heap_usage.o
+	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxRec.o heap_usage.o
 	./MergeSort_exe
 
-runMergeSortIter : intMergeSort.o intMerge.o intMergeAuxIter.o
-	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxIter.o
+runMergeSortIter : intMergeSort.o intMerge.o intMergeAuxIter.o heap_usage.o
+	gcc -o MergeSort_exe intMergeSort.o intMerge.o intMergeAuxIter.o heap_usage.o
 	./MergeSort_exe
 
 intMergeSort.o : intMergeSort.c 
@@ -40,6 +40,9 @@ intMergeAuxRec.o : intMergeAuxRec.c
 
 intMergeByInsert.o : intMergeByInsert.c 
 	gcc -c intMergeByInsert.c
+
+heap_usage.o : heap_usage.c 
+	gcc -c heap_usage.c
 
 runTask1 : task1.c
 	gcc -c task1.c
