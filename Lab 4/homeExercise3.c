@@ -26,16 +26,26 @@ void mergeSort(int A[],int s, int e){
 }
 
 int main(){
-    int A[] = {3,2,1,3};
-    //int A[] = {1,1,3,3};
+    int A[] = {-1,0,1,2,-1,-1};
+    //int A[] = {0,1,1};
+    
     int size = sizeof(A)/sizeof(int);
     mergeSort(A,0, size-1);
-    for(int i = 0 ; i < size ; i++){
-        if(A[i] == (size-i-1)){
-            printf("%d ", A[i]);
-            return 0;
-        }
-    }
 
-    printf("No such integer found!\n");
+    for(int i = 0 ; i < size ; i++){
+        if(i!=0 && A[i] == A[i-1]) continue;
+        int num = A[i];
+        int j = i+1;
+        int k = size-1;
+        while(j<k){
+            if(A[i] + A[j] + A[k] == 0){
+                printf("%d %d %d\n", A[i], A[j], A[k]);
+                j++;
+                while(A[j-1] == A[j]) j++;
+            }else if(A[i] + A[j] + A[k] > 0) k--;
+            else j++;
+        }
+
+    }
+    
 }

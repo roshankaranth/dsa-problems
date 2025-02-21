@@ -1,3 +1,8 @@
+runhomeExercise3 : homeExercise3.c
+	gcc -c homeExercise3.c
+	gcc -o homeExercise3_exe homeExercise3.o
+	./homeExercise3_exe
+
 runhomeExercise2 : homeExercise2.c
 	gcc -c homeExercise2.c
 	gcc -o homeExercise2_exe homeExercise2.o
@@ -78,3 +83,4 @@ clean :
 	rm *.o
 	rm *_exe
 	rm *_aux.csv
+	rm *.out
