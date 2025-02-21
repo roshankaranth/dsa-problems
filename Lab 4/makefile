@@ -1,3 +1,7 @@
+runExternalMergeSort : externalMergeSort.o personMergeAuxIter.o personMerge.o
+	gcc -o externalMergeSort_exe externalMergeSort.o personMerge.o personMergeAuxIter.o
+	./externalMergeSort_exe dat7578440.csv 1000000
+
 runTask4 : task4.o personMerge.o personMergeAuxIter.o
 	gcc -o task4_exe task4.o personMerge.o personMergeAuxIter.o
 	./task4_exe dat1000.csv 1000
@@ -60,3 +64,4 @@ runTask2 : task2.c
 clean : 
 	rm *.o
 	rm *_exe
+	rm *_aux.csv
