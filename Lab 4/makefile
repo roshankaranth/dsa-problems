@@ -1,3 +1,19 @@
+runTask4 : task4.o personMerge.o personMergeAuxIter.o
+	gcc -o task4_exe task4.o personMerge.o personMergeAuxIter.o
+	./task4_exe dat1000.csv 1000
+	./task4_exe dat10000.csv 10000
+	./task4_exe dat100000.csv 100000
+	./task4_exe dat1000000.csv 1000000
+
+task4.o : task4.c 
+	gcc -c task4.c
+
+personMerge.o : personMerge.c
+	gcc -c personMerge.c
+
+personMergeAuxIter.o : personMergeAuxIter.c
+	gcc -c personMergeAuxIter.c
+
 runMergeSortInsert : intMergeSort.o intMergeByInsert.o 
 	gcc -o MergeSort_exe intMergeSort.o intMergeByInsert.o 
 	./MergeSort_exe
