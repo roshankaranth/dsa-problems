@@ -1,3 +1,8 @@
+runhomeExercise2 : homeExercise2.c
+	gcc -c homeExercise2.c
+	gcc -o homeExercise2_exe homeExercise2.o
+	./homeExercise2_exe
+
 runhomeExercise1 : homeExercise1.c
 	gcc -c homeExercise1.c
 	gcc -o homeExercise1_exe homeExercise1.o
