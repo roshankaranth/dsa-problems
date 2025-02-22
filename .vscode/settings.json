@@ -7,6 +7,7 @@
         "element.h": "c",
         "limits": "c",
         "time.h": "c",
-        "personmerge.h": "c"
+        "personmerge.h": "c",
+        "string.h": "c"
     }
 }

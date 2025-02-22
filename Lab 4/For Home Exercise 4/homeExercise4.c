@@ -19,11 +19,18 @@ const static struct {
     {ROBBERY,"ROBBERY"}
 };
 
+typedef struct crime_data{
+    char crime[50];
+    int year;
+}crimeData;
+
 typedef struct criminal{
     char name[100];
     int age;
     int ID;
     double criminality;
+    crimeData crimes[50];
+    int crimeCount;
 
 }Criminal;
 
@@ -33,14 +40,14 @@ Criminal itoe(char* name, int age, int ID){
     strcpy(cr.name, name);
     cr.ID = ID;
     cr.age = age;
-
+    cr.crimeCount = 0;
     return cr;
 }
 
 void displayData(Criminal data[], int size){
 
     for(int i = 0 ; i < size ; i++){
-        printf("%s %d %d %.2f\n", data[i].name, data[i].age, data[i].ID, data[i].criminality);
+        printf("%s %d %d %d %.2f \n", data[i].name, data[i].age, data[i].ID,data[i].crimeCount ,data[i].criminality);
     }
 }
 
@@ -63,6 +70,13 @@ void recordCrime(char* crime, int year, int ID, Criminal data[]){
 
     Crime cr = convertStrtoEnum(crime);
     data[criminalIndex].criminality += cr*multiplier;
+
+    crimeData cd;
+    strcpy(cd.crime, crime);
+    cd.year = year;
+    data[criminalIndex].crimes[data[criminalIndex].crimeCount] = cd;
+    data[criminalIndex].crimeCount++;
+
 }
 
 void merge(Criminal data[], int lo, int mid, int hi){
