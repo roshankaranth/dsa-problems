@@ -185,6 +185,6 @@ void main(int argc, char* argv[]){
     time_interval += (t2.tv_usec-t1.tv_usec)*1e-6;
     
     printf("QuickSort with Lomuto Partition took %f amount of time.\n", time_interval);
-    
+    //display(data1, size);
 
 }
