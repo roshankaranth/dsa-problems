@@ -38,7 +38,7 @@ int twoWayHoarePartition(int *arr, int l, int r, int pv){
         while(i< r && arr[i] <= arr[r]) i++;
         while(j>=l && arr[j] > arr[r]) j--;
         if(i<j) swap(arr,i,j);        
-    }
+    }//display(data, size);
 
     swap(arr, i, r);
 
