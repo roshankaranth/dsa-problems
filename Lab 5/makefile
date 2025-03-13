@@ -1,7 +1,10 @@
+runHomeExercise2 : homeExercise2.o
+	gcc -o homeExercise2_exe homeExercise2.o
+	./homeExercise2_exe
+
 runTask5 : task5.o
 	gcc -o task5_exe task5.o
 	./task5_exe
-
 
 runTask4 : task4.o
 	gcc -o task4_exe task4.o
@@ -18,6 +21,9 @@ runTask2 : task2.o
 runTask1 : task1.o
 	gcc -o task1_exe task1.o
 	./task1_exe 
+
+homeExercise2.o : homeExercise2.c 
+	gcc -c homeExercise2.c 
 
 task5.o : task5.c 
 	gcc -c task5.c
