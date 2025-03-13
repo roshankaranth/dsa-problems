@@ -1,3 +1,8 @@
+runTask5 : task5.o
+	gcc -o task5_exe task5.o
+	./task5_exe
+
+
 runTask4 : task4.o
 	gcc -o task4_exe task4.o
 	./task4_exe
@@ -13,6 +18,9 @@ runTask2 : task2.o
 runTask1 : task1.o
 	gcc -o task1_exe task1.o
 	./task1_exe 
+
+task5.o : task5.c 
+	gcc -c task5.c
 
 task4.o : task4.c 
 	gcc -c task4.c

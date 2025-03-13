@@ -117,7 +117,7 @@ int main()
     gettimeofday(&t2,NULL);
 
     time_taken = (t2.tv_sec - t1.tv_sec);
-    time_taken = (t2.tv_usec-t1.tv_usec) * 1e-6;
+    time_taken += (t2.tv_usec-t1.tv_usec) * 1e-6;
 
     printf("\nSum calculated using the TR function : %lld", res);
     printf("\nTR approach took %f seconds to execute\n", time_taken);
@@ -127,7 +127,7 @@ int main()
     gettimeofday(&t2,NULL);
 
     time_taken = (t2.tv_sec - t1.tv_sec);
-    time_taken = (t2.tv_usec-t1.tv_usec) * 1e-6;
+    time_taken += (t2.tv_usec-t1.tv_usec) * 1e-6;
 
     printf("\nSum calculated using the Iterative function : %lld", res);
     printf("\nIterative approach took %f seconds to execute\n", time_taken);
