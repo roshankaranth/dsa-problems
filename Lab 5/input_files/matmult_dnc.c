@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void matrix_multiply(int **c,int **d,int size,int size2,int **new))
+void matrix_multiply(int **c,int **d,int size,int size2,int **new)
 {
     if(size == 1)   // Base case
     {   

@@ -1,3 +1,7 @@
+runHomeExercise4 : homeExercise4.o
+	gcc -o homeExercise4_exe homeExercise4.o
+	./homeExercise4_exe
+
 runHomeExercise3 : homeExercise3.o
 	gcc -o homeExercise3_exe homeExercise3.o
 	./homeExercise3_exe
@@ -29,6 +33,9 @@ runTask2 : task2.o
 runTask1 : task1.o
 	gcc -o task1_exe task1.o
 	./task1_exe 
+
+homeExercise4.o : homeExercise4.c 
+	gcc -c homeExercise4.c 
 
 homeExercise3.o : homeExercise3.c 
 	gcc -c homeExercise3.c 
