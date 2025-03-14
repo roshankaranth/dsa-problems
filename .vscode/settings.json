@@ -8,6 +8,7 @@
         "limits": "c",
         "time.h": "c",
         "personmerge.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdio.h": "c"
     }
 }
