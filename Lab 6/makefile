@@ -1,6 +1,6 @@
 runTask3 : task3.o
 	gcc -o task3_exe task3.o
-	./task3_exe dat10000.csv 10000
+	./task3_exe dat100000.csv 100000
 
 runTask2 : task2.o
 	gcc -o task2_exe task2.o

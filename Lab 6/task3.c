@@ -103,7 +103,10 @@ int mediansOfMedians(Person* data, int l, int r){
         Medians[i] = data[mediansOfMedians(data , l + i*5, min(r,l + i*5 + 4))];
     }
 
-    return mediansOfMedians(Medians, 0, MedianGroups-1);
+    int x = mediansOfMedians(Medians, 0, MedianGroups-1);
+    for(int i = l ; i <= r ; i++){
+        if(data[i].id == Medians[x].id) return i;
+    }
 
 }
 
