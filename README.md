@@ -5,3 +5,4 @@ TO-DO
 - NTR, TR in detail
 - why recursion is slow ? stack frame ?
 - Explicit stack space
+- labsheet 6, task5, HW exercise
