@@ -1,3 +1,7 @@
+runTask5 : task5.o
+	gcc -o task5_exe task5.o
+	./task5_exe dat1000.csv 1000
+
 runTask4 : task4.o
 	gcc -o task4_exe task4.o
 	./task4_exe dat100000.csv 100000
@@ -33,6 +37,9 @@ task3.o : task3.c
 
 task4.o : task4.c 
 	gcc -c task4.c
+
+task5.o : task5.c 
+	gcc -c task5.c
 
 clean : 
 	rm *.o
