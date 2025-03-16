@@ -3,9 +3,6 @@
 #include<stdlib.h>
 #include<sys/time.h>
 
-
-double time_taken_MOM = 0;
-
 typedef struct person {
     int id;
     char name[100];
@@ -113,30 +110,28 @@ int mediansOfMedians(Person* data, int l, int r){
 
 }
 
+void insertionSort(Person* data, int l, int r){
+
+    for(int i = l+1 ; i <= r ; i++){
+        Person p = data[i];
+        int j = i-1;
+        while(j>=l){
+            if(data[j].height > p.height) data[j+1] = data[j];
+            else break;
+
+            j--;
+        }
+
+        data[j+1] = p;
+    }
+
+}
+
 void QuickSort1(Person* data, int l, int r){
-    if(l>=r) return;
-    
-    int pv = r; 
-    int pvInd = threeWayHoarePartition(data, l, r, pv);
-    QuickSort1(data,l,pvInd-1);
-    QuickSort1(data,pvInd+1,r);
-}
-
-void QuickSort2(Person* data, int l, int r){
-    if(l>=r) return;
-    int pv = 0;
-    int mid = (l+r)/2;
-    if(((data[l].height <= data[mid].height) && (data[mid].height <= data[r].height)) || ((data[r].height <= data[mid].height) && (data[mid].height <= data[l].height))) pv = mid;
-    else if(((data[mid].height <= data[l].height) && (data[l].height <= data[r].height)) || ((data[r].height <= data[l].height) && (data[l].height <= data[mid].height))) pv = l;
-    else pv = r;
-
-    int pvInd = threeWayHoarePartition(data, l, r, pv);
-    QuickSort2(data,l,pvInd-1);
-    QuickSort2(data,pvInd+1,r);
-}
-
-void QuickSort3(Person* data, int l, int r){
-    if(l>=r) return;
+    if(r-l+1 < 10){
+        insertionSort(data,l,r);
+        return;
+    }
     
     struct timeval tv;
     gettimeofday(&tv,NULL);
@@ -144,23 +139,23 @@ void QuickSort3(Person* data, int l, int r){
 
     int pv = (rand() % (r-l)) + l;
     int pvInd = threeWayHoarePartition(data, l, r, pv);
-    QuickSort3(data,l,pvInd-1);
-    QuickSort3(data,pvInd+1,r);
+    QuickSort1(data,l,pvInd-1);
+    QuickSort1(data,pvInd+1,r);
 }
 
-void QuickSort4(Person* data, int l, int r){
-    if(l>=r) return;
-    struct timeval t1,t2;
-    gettimeofday(&t1,NULL);
-    int pv = mediansOfMedians(data, l, r);
-    gettimeofday(&t2,NULL);
+void QuickSort2(Person* data, int l, int r){
+    if(r-l+1 < 10){
+        return;
+    }
+   
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    srand(tv.tv_sec + tv.tv_usec*1e6);
 
-    time_taken_MOM += (t2.tv_sec - t1.tv_sec);
-    time_taken_MOM += (t2.tv_usec - t1.tv_usec) * 1e-6;
-
+    int pv = (rand() % (r-l)) + l;
     int pvInd = threeWayHoarePartition(data, l, r, pv);
-    QuickSort4(data,l,pvInd-1);
-    QuickSort4(data,pvInd+1,r);
+    QuickSort2(data,l,pvInd-1);
+    QuickSort2(data,pvInd+1,r);
 }
 
 
@@ -209,33 +204,16 @@ void main(int argc, char* argv[]){
     time_interval = (t2.tv_sec - t1.tv_sec);
     time_interval += (t2.tv_usec-t1.tv_usec)*1e-6;
     
-    printf("QuickSort with last index as pivot took %f amount of time.\n", time_interval);
+    printf("Hybrid sort with insertion sort for smaller arrays took %f amount of time.\n", time_interval);
 
     gettimeofday(&t1,NULL);
     QuickSort2(data2, 0, size-1);
+    insertionSort(data2,0,size-1);
     gettimeofday(&t2,NULL);
 
     time_interval = (t2.tv_sec - t1.tv_sec);
     time_interval += (t2.tv_usec-t1.tv_usec)*1e-6;
     
-    printf("QuickSort with Median of three as pivot took %f amount of time.\n", time_interval);
-
-    gettimeofday(&t1,NULL);
-    QuickSort3(data3, 0, size-1);
-    gettimeofday(&t2,NULL);
-
-    time_interval = (t2.tv_sec - t1.tv_sec);
-    time_interval += (t2.tv_usec-t1.tv_usec)*1e-6;
+    printf("Hybrid sort with insertion sort at the end took %f amount of time.\n", time_interval);
     
-    printf("QuickSort with Random Pivot took %f amount of time.\n", time_interval);
-    gettimeofday(&t1,NULL);
-    QuickSort4(data4, 0, size-1);
-    gettimeofday(&t2,NULL);
-
-    time_interval = (t2.tv_sec - t1.tv_sec);
-    time_interval += (t2.tv_usec-t1.tv_usec)*1e-6;
-    
-    printf("QuickSort with Median of Medians took %f amount of time.\n", time_interval);
-    printf("time taken for MoM : %f", time_taken_MOM);
-
 }
