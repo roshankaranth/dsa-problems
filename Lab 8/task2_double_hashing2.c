@@ -7,6 +7,14 @@
 typedef enum state {filled,empty,deleted}State;
 typedef enum bool {false,true}bool;
 
+int iop = 0;
+int dop = 0;
+int sop = 0;
+
+int icol = 0;
+int dcol = 0;
+int scol = 0;
+
 typedef struct student{
     long long int ID;
     char name[30];
@@ -42,6 +50,7 @@ void insert(Student* student, hash_table_element* hash_table){
         return;
     }else{
         int i = 1;
+        if(i==1) icol++;
         int nindex = hash_function(student->ID, i, HASH_TABLE_SIZE);
         while(hash_table[nindex].st == filled && nindex != index) {
             i++;
@@ -59,6 +68,7 @@ void insert(Student* student, hash_table_element* hash_table){
 Student* search(hash_table_element* hash_table, int ID){
     
     for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
+        if(i==1) scol++;
         int index = hash_function(ID,i,HASH_TABLE_SIZE);
         if(hash_table[index].st == empty){
             printf("%d not found!\n",ID);
@@ -75,6 +85,7 @@ Student* search(hash_table_element* hash_table, int ID){
 void delete(hash_table_element* hash_table, int ID){
     
     for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
+        if(i==1) dcol++;
         int index = hash_function(ID,i,HASH_TABLE_SIZE);
         if(hash_table[index].st == empty){
             printf("%d not found!\n",ID);
@@ -142,12 +153,14 @@ void main(){
                      Student* element = itoe(name,ID);
                      insert(element,hash_table);
                      printf("inserted %d %s\n", ID,name);
+                     iop++;
                      break;
             
             case 2 : token = strtok(NULL," ");
                      ID = atoi(token);
 
                      delete(hash_table,ID);
+                     dop++;
                      break;
 
             case 3 : token = strtok(NULL," ");
@@ -157,9 +170,14 @@ void main(){
                      if(s!=NULL){
                         printf("Searched element : %s %lld\n",s->name,s->ID);
                      }
+                     sop++;
                      break;
         }
     }
+
+    printf("average collision during insertion : %f\n", (double)(icol)/iop);
+    printf("average collision during delete : %f\n", (double)(dcol)/dop);
+    printf("average collision during search : %f\n", (double)(scol)/sop);
     
 
 }
