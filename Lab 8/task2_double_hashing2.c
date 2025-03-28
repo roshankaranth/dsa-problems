@@ -43,7 +43,7 @@ int hash_function(long long int key, int i, int m){
 void insert(Student* student, hash_table_element* hash_table){
 
     for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
-        if(i==1) icol++;
+        if(i!=0) icol++;
         int index = hash_function(student->ID,i,HASH_TABLE_SIZE);
         if(hash_table[index].st != filled){
             hash_table[index].s = student;
@@ -59,7 +59,7 @@ void insert(Student* student, hash_table_element* hash_table){
 Student* search(hash_table_element* hash_table, int ID){
     
     for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
-        if(i==1) scol++;
+        if(i!=0) scol++;
         int index = hash_function(ID,i,HASH_TABLE_SIZE);
         if(hash_table[index].st == empty){
             printf("%d not found!\n",ID);
@@ -76,7 +76,7 @@ Student* search(hash_table_element* hash_table, int ID){
 void delete(hash_table_element* hash_table, int ID){
     
     for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
-        if(i==1) dcol++;
+        if(i!=0) dcol++;
         int index = hash_function(ID,i,HASH_TABLE_SIZE);
         if(hash_table[index].st == empty){
             printf("%d not found!\n",ID);
