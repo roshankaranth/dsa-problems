@@ -44,27 +44,18 @@ int hash_function(long long int key, int i, int m){
 
 void insert(Student* student, hash_table_element* hash_table){
 
-    int index = hash_function(student->ID,0,HASH_TABLE_SIZE);
-
-    if(hash_table[index].st != filled){
-        hash_table[index].s = student;
-        hash_table[index].st = filled;
-        return;
-    }else{
-        int i = 1;
+    for(int i = 0 ; i < HASH_TABLE_SIZE ; i++){
         if(i==1) icol++;
-        int nindex = hash_function(student->ID, i, HASH_TABLE_SIZE);
-        while(hash_table[nindex].st == filled && nindex != index) {
-            i++;
-            nindex = hash_function(student->ID, i, HASH_TABLE_SIZE);
+        int index = hash_function(student->ID,i,HASH_TABLE_SIZE);
+        if(hash_table[index].st != filled){
+            hash_table[index].s = student;
+            hash_table[index].st = filled;
+            return;
         }
-
-        if(nindex == index) return;
-
-        hash_table[nindex].s = student;
-        hash_table[nindex].st = filled;
-        return;
     }
+
+    printf("Hashtable full!\n");
+    return;
 }
 
 Student* search(hash_table_element* hash_table, int ID){
