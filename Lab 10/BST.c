@@ -254,6 +254,22 @@ int max(int a, int b){
     else return b;
 }
 
+Node* rotate_left(Node* node){
+    Node* x = node->right;
+    node->right = x->left;
+    x->left = node;
+
+    return x;
+}
+
+Node* rotate_right(Node* node){
+    Node* x = node->left;
+    node->left = x->right;
+    x->right = node;
+
+    return x;
+}
+
 int is_height_balanced(Node* node){
     if(node == NULL) return 0;
 
@@ -267,6 +283,63 @@ int is_height_balanced(Node* node){
 
 int is_avl(BST* bst){
     return is_height_balanced(bst->root);
+}
+
+Node* insertAVL(Node* node, int val){
+    if(node == NULL) node = new_node(val);
+    else if(node->value > val){
+        node->left = insertAVL(node->left, val);
+    }else{
+        node->right = insertAVL(node->right, val);
+    }
+
+    int balance = is_height_balanced(node);
+
+    if(balance == -1){
+        if(node->value > val){
+            if(node->left->value > val){
+                node = rotate_right(node);
+            }else{
+                node->left = rotate_left(node->left);
+                node = rotate_right(node);
+            }
+        }else{
+            if(node->right->value < val){
+                node = rotate_left(node);
+            }else{
+                node->right = rotate_right(node->right);
+                node = rotate_left(node);
+            }  
+        }
+    }
+
+    return node;
+}
+
+void traverse_bfs(Node *node){
+    if (node == NULL){
+        return;
+    }
+
+    Node *queue[100];
+    int front = 0;
+    int back = 0;
+    queue[back++] = node;
+    printf("BFS:\n");
+    while (front != back){
+        int size = back;
+        for(int i = front ; i < size; i++){
+            Node *current = queue[front++];
+            printf("%d ", current->value);
+            if (current->left != NULL){
+                queue[back++] = current->left;
+            }
+            if (current->right != NULL){
+                queue[back++] = current->right;
+            }
+        }
+        printf("\n");
+    }
 }
 
 // Driver program to test the above functions (feel free to play around with this)
@@ -296,5 +369,15 @@ int main()
     delete(bst, bst->root);
     traverse_in_order(bst->root);
     printf("\n");
+
+    //AVL tree
+    int arr[] = {1,2,3,4,5,6,7,8,9};
+    BST* avl = new_bst();
+    for(int i = 0 ; i < sizeof(arr)/sizeof(int) ; i++){
+        avl->root = insertAVL(avl->root,arr[i]);
+    }
+
+    printf("%d\n", is_avl(avl));
+    traverse_bfs(avl->root);
     return 0;
 }
