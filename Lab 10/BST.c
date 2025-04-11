@@ -3,6 +3,7 @@
 
 typedef struct node {
     int value;
+    int height;
     struct node *left;
     struct node *right;
 } Node;
@@ -22,6 +23,7 @@ Node *new_node(int value)
 {
     Node *node = malloc(sizeof(Node));
     node->value = value;
+    node->height = 1;
     node->left = NULL;
     node->right = NULL;
     return node;
@@ -254,10 +256,20 @@ int max(int a, int b){
     else return b;
 }
 
+int calculate_height(Node* node){
+    int lheight = (node->left != NULL) ? node->left->height: 0;
+    int rheight = (node->right != NULL) ? node->right->height:0;
+    
+    return 1 + max(lheight,rheight);
+}
+
 Node* rotate_left(Node* node){
     Node* x = node->right;
     node->right = x->left;
     x->left = node;
+
+    node->height = calculate_height(node);
+    x->height = calculate_height(x);
 
     return x;
 }
@@ -266,6 +278,9 @@ Node* rotate_right(Node* node){
     Node* x = node->left;
     node->left = x->right;
     x->right = node;
+
+    node->height = calculate_height(node);
+    x->height = calculate_height(x);
 
     return x;
 }
@@ -285,15 +300,26 @@ int is_avl(BST* bst){
     return is_height_balanced(bst->root);
 }
 
+int balance_factor(Node* node){
+    int lheight = (node->left != NULL) ? node->left->height: 0;
+    int rheight = (node->right != NULL) ? node->right->height:0;
+    
+    return lheight - rheight;
+}
+
 Node* insertAVL(Node* node, int val){
     if(node == NULL) node = new_node(val);
     else if(node->value > val){
         node->left = insertAVL(node->left, val);
+        node->left->height = calculate_height(node->left);
+        
     }else{
         node->right = insertAVL(node->right, val);
+        node->right->height = calculate_height(node->right);
     }
 
-    int balance = is_height_balanced(node);
+    int balance = balance_factor(node);
+    balance = (balance>1 || balance <-1) ? -1 : 0;
 
     if(balance == -1){
         if(node->value > val){
