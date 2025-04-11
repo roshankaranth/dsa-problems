@@ -63,9 +63,26 @@ void traverse_bfs(Node *node)
 
 */
 
+Node* Helper(int *inorder, int* post_order, int n, int i, int c, int d){
+    if(c>d) return NULL;
+    if(c==d) return new_node(inorder[c]);
+
+    int parent = post_order[i];
+    int j = 0;
+    for(; j < d; j++){
+        if(parent == inorder[j]) break;
+    }
+
+    Node* pnode = new_node(parent);
+    pnode->right = Helper(inorder,post_order, n, i-1, j+1,d);
+    pnode->left = Helper(inorder,post_order,n,i-(d-j)-1,c,j-1);
+    return pnode;
+
+}
+
 Node *build_tree(int *in_order, int *post_order, int n) 
 {
-    // Your code here
+    return Helper(in_order, post_order, n, n-1, 0, n-1);
 }
 
 int main() 
