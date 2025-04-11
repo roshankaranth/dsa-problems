@@ -397,6 +397,93 @@ Node* deleteAVL(Node* node, int value){
 
 }
 
+Node* restructure(Node *z, Node *y, Node *x){
+    Node *a,*b,*c;
+    Node *T0,*T1,*T2,*T3;
+    if(z->left == y){
+        c = z;
+        if(y->left == x){
+            a = x;
+            b = y;
+            T0 = x->left;
+            T1 = x->right;
+            T2 = y->right;
+            T3 = z->right;
+        }else{
+            a = y;
+            b = x;
+            T0 = y->left;
+            T1 = x->right;
+            T2 = x->left;
+            T3 = z->right;
+        }
+
+    }else{
+        a = z;
+        if(y->left == x){
+            b = x;
+            c = y;
+            T0 = z->left;
+            T1 = x->right;
+            T2 = x->left;
+            T3 = y->right;
+        }else{
+            b = y;
+            c = x;
+            T0 = z->left;
+            T1 = y->left;
+            T2 = x->right;
+            T3 = x->left;
+        }
+    }
+
+    z = b;
+    b->left = a;
+    a->left = T0;
+    a->right = T1;
+
+    b->right = c;
+    c->left = T2;
+    c->right = T3;
+
+    return z;
+
+
+}
+
+Node* insertAVL_restructuringAlgo(Node* node, int val){
+    if(node == NULL) node = new_node(val);
+    else if(node->value > val){
+        node->left = insertAVL(node->left, val);
+        node->height = calculate_height(node);
+        
+    }else{
+        node->right = insertAVL(node->right, val);
+        node->height = calculate_height(node);
+    }
+
+    int balance = balance_factor(node);
+    balance = (balance>1 || balance <-1) ? -1 : 0;
+
+    if(balance == -1){
+        if(node->value > val){
+            if(node->left->value > val){
+                node = restructure(node,node->left,node->left->left);
+            }else{
+                node = restructure(node,node->left,node->left->right);
+            }
+        }else{
+            if(node->right->value < val){
+                node = restructure(node,node->right,node->right->right);
+            }else{
+               node = restructure(node, node->right,node->right->left);
+            }  
+        }
+    }
+
+    return node;
+}
+
 void traverse_bfs(Node *node){
     if (node == NULL){
         return;
@@ -454,13 +541,19 @@ int main()
     //AVL tree
     int arr[] = {1,2,3,4,5,6,7,8,9};
     BST* avl = new_bst();
+    BST* avlr = new_bst();
     for(int i = 0 ; i < sizeof(arr)/sizeof(int) ; i++){
         avl->root = insertAVL(avl->root,arr[i]);
+        avlr->root = insertAVL(avlr->root,arr[i]);
+
     }
 
     printf("%d\n", is_avl(avl));
     traverse_bfs(avl->root);
     avl->root = deleteAVL(avl->root,4);
     traverse_bfs(avl->root);
+    printf("\n");
+    printf("%d\n", is_avl(avlr));
+    traverse_bfs(avlr->root);
     return 0;
 }
