@@ -311,11 +311,11 @@ Node* insertAVL(Node* node, int val){
     if(node == NULL) node = new_node(val);
     else if(node->value > val){
         node->left = insertAVL(node->left, val);
-        node->left->height = calculate_height(node->left);
+        node->height = calculate_height(node);
         
     }else{
         node->right = insertAVL(node->right, val);
-        node->right->height = calculate_height(node->right);
+        node->height = calculate_height(node);
     }
 
     int balance = balance_factor(node);
@@ -340,6 +340,61 @@ Node* insertAVL(Node* node, int val){
     }
 
     return node;
+}
+
+Node* deleteAVL(Node* node, int value){
+    
+    if(node == NULL){
+        return NULL;
+    }else if(node->value > value){
+        node->left = deleteAVL(node->left, value);
+        node->height = calculate_height(node);
+    }else if(value > node->value){
+        node->right = deleteAVL(node->right,value);
+        node->height = calculate_height(node);
+    }else{
+        if(node->left == NULL && node->right == NULL){
+            free(node);
+            node = NULL;
+        }else if(node->left == NULL){
+            Node* temp = node;
+            node = node->right;
+            free(temp);
+        }else if(node->right == NULL){
+            Node* temp = node;
+            node = node->left;
+            free(temp);
+        }else{
+            Node* temp = successor(node);
+            node->value = temp->value;
+            node->left = deleteAVL(node->left,temp->value);
+            node->height = calculate_height(node);
+        }
+    }
+
+    int balance = balance_factor(node);
+
+    if(balance > 1){
+        if(balance_factor(node->left) >= 0){
+            node = rotate_right(node);
+        }else{
+            node->left = rotate_left(node->left);
+            node = rotate_right(node->right);
+        }
+    }else if(balance < -1){
+
+        if(balance_factor(node->right) <= 0){
+            node = rotate_left(node);
+        }else{
+            node->right = rotate_right(node->right);
+            node = rotate_left(node);
+        }
+
+    }
+
+    return node;
+
+
 }
 
 void traverse_bfs(Node *node){
@@ -404,6 +459,8 @@ int main()
     }
 
     printf("%d\n", is_avl(avl));
+    traverse_bfs(avl->root);
+    avl->root = deleteAVL(avl->root,4);
     traverse_bfs(avl->root);
     return 0;
 }
