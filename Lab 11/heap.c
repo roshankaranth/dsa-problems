@@ -42,6 +42,18 @@ void add_to_tree(Heap* h, int val){
 
 }
 
+int parent(Heap* h, int node){
+    return (node-1)/2;
+}
+
+int left_child(Heap* h, int node){
+    return 2*(node) + 1;
+}
+
+int right_child(Heap* h, int node){
+    return 2*(node) + 2;
+}
+
 void display(Heap* h){
     for(int i = 0 ; i < h->size ; i++){
         printf("%d ",h->data[i]);
