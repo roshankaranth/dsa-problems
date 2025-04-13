@@ -91,6 +91,17 @@ void build_max_heap(Heap* h){
     }
 }
 
+int depth_of_node(Heap* h, int depth){
+    
+    if(depth < h->depth){
+        return power(2,depth);
+    }else if(depth > h->depth){
+        return 0;
+    }else{
+        return (h->size - power(2,depth)+1);
+    }
+}
+
 
 void main(){
     Heap* h = heap_create();
@@ -105,8 +116,13 @@ void main(){
     add_to_tree(h,10);
     add_to_tree(h,14);
     add_to_tree(h,16);
+    add_to_tree(h,5);
 
     display(h);
+    build_max_heap(h);
+    display(h);
+
+    printf("%d\n", depth_of_node(h,3));
 
     return;
 }
