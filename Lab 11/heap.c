@@ -61,6 +61,37 @@ void display(Heap* h){
     printf("\n");
 }
 
+void max_heapify(Heap* h, int index){
+    
+    int left = left_child(h,index);
+    int right = right_child(h,index);
+    int largest = index;
+
+    if(left < h->size && h->data[left] > h->data[largest]){
+        largest = left;
+    }
+
+    if(right < h->size && h->data[right] > h->data[largest]){
+        largest = right;
+    }
+
+    if(largest != index){
+        int temp = h->data[index];
+        h->data[index] = h->data[largest];
+        h->data[largest] = temp;
+        max_heapify(h,largest);
+    }
+}
+
+void build_max_heap(Heap* h){
+    int size =h->size;
+
+    for(int i = h->size-1 ; i>= 0 ;i--){
+        max_heapify(h,i);
+    }
+}
+
+
 void main(){
     Heap* h = heap_create();
 
