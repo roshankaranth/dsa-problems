@@ -32,7 +32,7 @@ void add_to_tree(Heap* h, int val){
     
     if(h->capacity == h->size){
         h->depth++;
-        h->data = (int*)realloc(h->data,sizeof(Heap)*(power(2,h->depth+1) -1));
+        h->data = (int*)realloc(h->data,sizeof(int)*(power(2,h->depth+1) -1));
         h->capacity = power(2,h->depth+1)-1;
 
     }
