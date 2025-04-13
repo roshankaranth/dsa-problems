@@ -20,7 +20,7 @@ Node *new_node()
         temp->keys[i] = 0;
         temp->children[i] = NULL;
     }
-    temp->keys[3] = 0;
+    temp->keys[3] = 0; //what?
     temp->isLeaf = 0;
     temp->num_keys = 0;
     return temp;
