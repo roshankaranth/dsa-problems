@@ -85,6 +85,7 @@ typedef struct graph_node
 {
     int data;
     color c;
+    int dist;
 } graph_node;
 
 // Graph
@@ -119,6 +120,7 @@ Graph *get_graph(int V, int E)
     for(int i = 0 ; i < V ; i++){
         G->vertices[i].c = WHITE;
         G->vertices[i].data = i;
+        G->vertices[i].dist = 2*V;
     }
 
     return G;
@@ -131,6 +133,7 @@ void bfs(Graph *G, int s)
     queue* Q = get_queue();
     // Mark the source s as grey and enqueue it
     G->vertices[s].c = GREY;
+    G->vertices[s].dist = 0;
     enqueue(Q,s);
     // While the queue is not empty:
     while (!is_empty(Q))
@@ -138,7 +141,7 @@ void bfs(Graph *G, int s)
         // Dequeue a node u
         int u = dequeue(Q);
         // Print the data of the dequeued node that would now be explored
-        printf("%d ",u);
+        printf("%d %d, ",u, G->vertices[u].dist);
         // For each white node v adjacent to u:
         for (int v = 0; v < G->V; v++)
         {
@@ -146,6 +149,7 @@ void bfs(Graph *G, int s)
             {
                 // Mark v as grey
                 G->vertices[v].c = GREY;
+                G->vertices[v].dist = G->vertices[u].dist + 1;
                 // Enqueue v
                 enqueue(Q,v);
 
