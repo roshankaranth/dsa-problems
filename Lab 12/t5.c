@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
 typedef enum color
 {
     WHITE,
@@ -27,32 +28,100 @@ typedef struct Graph
 
 Graph *get_graph(int V, int E)
 {
-    // As in previous tasks
+    Graph *G = (Graph *)malloc(sizeof(Graph));
+    G->V = V;
+    G->E = E;
+    // Allocate memory for the adjacency matrix (V x V int array)
+    G->adjacency_matrix = (int**)malloc(sizeof(int*)*V);
+    // Allocate memory for each row of the adjacency matrix
+    for(int i = 0 ; i < V ; i++){
+        G->adjacency_matrix[i] = (int*)malloc(sizeof(int)*V);
+        memset(G->adjacency_matrix[i],0,V);
+    }
+    // Allocate memory for the vertices array (Array of |V| graph_nodes)
+    G->vertices = (graph_node*)malloc(sizeof(graph_node)*V);
+    // Initialize all the vertices to WHITE
+    for(int i = 0 ; i < V ; i++){
+        G->vertices[i].c = WHITE;
+        G->vertices[i].data = i;
+        G->vertices[i].d= 0;
+        G->vertices[i].f = 0;
+    }
+
+    return G;
 }
 
 void add_edge_adj_matrix(Graph *G, int u, int v)
 {
     // As in previous tasks
+    G->adjacency_matrix[u][v] = 1;
 }
 
 /* 
     Recursive DFS with time stamps as given in CLRS
 */
 int time = 0;
-void recDFS(Graph *G)
-{
-    // As in task 4
-}
 
 void recDFSVisit(Graph *G, int u)
 {
-    // As in task 4 (Print the visited vertex as well)
+    printf("%d ",u);
+    G->vertices[u].c = GREY;
+    G->vertices[u].d = time;
+    time++;
+
+    for(int i = 0 ; i < G->V ; i++){
+        if(G->adjacency_matrix[u][i] == 1 && G->vertices[i].c == WHITE){
+            G->vertices[i].c = GREY;
+            recDFSVisit(G,i);
+        }
+    }
+    G->vertices[u].c = BLACK;
+    G->vertices[u].f = time;
+}
+
+void recDFS(Graph *G)
+{
+    // As in task 4
+    for(int i = 0 ; i < G->V ; i++){
+        if(G->vertices[i].c == WHITE){
+            recDFSVisit(G,i);
+        }
+    }
 }
 
 Graph *get_transpose(Graph *G)
 {
     // The transpose of a graph is a graph with the same vertices but with the direction of all edges reversed
-}
+    Graph *Gt = (Graph *)malloc(sizeof(Graph));
+    Gt->V = G->V;
+    Gt->E = G->E;
+    // Allocate memory for the adjacency matrix (V x V int array)
+    Gt->adjacency_matrix = (int**)malloc(sizeof(int*)*G->V);
+    // Allocate memory for each row of the adjacency matrix
+    for(int i = 0 ; i < G->V ; i++){
+        Gt->adjacency_matrix[i] = (int*)malloc(sizeof(int)*G->V);
+        memset(Gt->adjacency_matrix[i],0,G->V);
+    }
+    // Allocate memory for the vertices array (Array of |V| graph_nodes)
+    Gt->vertices = (graph_node*)malloc(sizeof(graph_node)*G->V);
+    // Initialize all the vertices to WHITE
+    for(int i = 0 ; i < G->V ; i++){
+        Gt->vertices[i].c = WHITE;
+        Gt->vertices[i].data = i;
+        Gt->vertices[i].d= 0;
+        Gt->vertices[i].f = 0;
+    }
+
+    for(int u = 0 ; u < G->V ; u++){
+        for(int v = 0 ; v < G->V ; v++){
+            if(G->adjacency_matrix[u][v] == 1){
+                Gt->adjacency_matrix[v][u] = 1;
+            }
+        }
+    }
+
+    return Gt;
+}   
 
 int strongly_connected_components(Graph *G)
 {
@@ -110,10 +179,59 @@ int strongly_connected_components(Graph *G)
     return num_scc;
 }
 
-// int weakly_connected_components(Graph *G) // Implement after testing strongly_connected_components
-// {
-//     // TODO: Implement this function
-// }
+Graph* undirected_graph(Graph* G){
+    Graph *Gu = (Graph *)malloc(sizeof(Graph));
+    Gu->V = G->V;
+    Gu->E = G->E;
+    // Allocate memory for the adjacency matrix (V x V int array)
+    Gu->adjacency_matrix = (int**)malloc(sizeof(int*)*G->V);
+    // Allocate memory for each row of the adjacency matrix
+    for(int i = 0 ; i < G->V ; i++){
+        Gu->adjacency_matrix[i] = (int*)malloc(sizeof(int)*G->V);
+        memset(Gu->adjacency_matrix[i],0,G->V);
+    }
+    // Allocate memory for the vertices array (Array of |V| graph_nodes)
+    Gu->vertices = (graph_node*)malloc(sizeof(graph_node)*G->V);
+    // Initialize all the vertices to WHITE
+    for(int i = 0 ; i < G->V ; i++){
+        Gu->vertices[i].c = WHITE;
+        Gu->vertices[i].data = i;
+        Gu->vertices[i].d= 0;
+        Gu->vertices[i].f = 0;
+    }
+
+    for(int u = 0 ; u < G->V ; u++){
+        for(int v = 0 ; v < G->V ; v++){
+            if(G->adjacency_matrix[u][v] == 1){
+                Gu->adjacency_matrix[v][u] = 1;
+                Gu->adjacency_matrix[u][v] = 1;
+            }
+        }
+    }
+
+    return Gu;
+}
+
+int weakly_connected_components(Graph *G) // Implement after testing strongly_connected_components
+{
+    // TODO: Implement this function
+    Graph* Gu = undirected_graph(G);
+
+    int num_wcc = 0;
+    time = 0;
+    printf("\n");
+    for (int i = 0; i < G->V; i++)
+    {
+        if (Gu->vertices[i].c == WHITE)
+        {
+            num_wcc++;
+            printf("SCC %d: ", num_wcc);
+            recDFSVisit(Gu, i);
+            printf("\n");
+        }
+    }
+    return num_wcc;
+}
 
 int main()
 {
@@ -133,7 +251,7 @@ int main()
     // Number of strongly connected components
     printf("Number of strongly connected components: %d\n", strongly_connected_components(G));
 
-    // Number of weakly connected components.
-    // printf("Number of weakly connected components: %d\n", weakly_connected_components(G));
+    //Number of weakly connected components.
+    printf("Number of weakly connected components: %d\n", weakly_connected_components(G));
     return 0;
 }

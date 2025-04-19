@@ -1,3 +1,7 @@
+runT5 : t5.o
+	gcc -o t5_exe t5.o
+	./t5_exe 
+
 runT4 : t4.o
 	gcc -o t4_exe t4.o
 	./t4_exe 
@@ -13,6 +17,9 @@ runT2 : t2.o
 runT1 : t1.o
 	gcc -o t1_exe t1.o
 	./t1_exe 
+
+t5.o : t5.c
+	gcc -c t5.c
 
 t4.o : t4.c
 	gcc -c t4.c
