@@ -86,6 +86,7 @@ typedef struct graph_node
     int data;
     color c;
     int dist;
+    int predecessor;
 } graph_node;
 
 // Graph
@@ -121,6 +122,7 @@ Graph *get_graph(int V, int E)
         G->vertices[i].c = WHITE;
         G->vertices[i].data = i;
         G->vertices[i].dist = 2*V;
+        G->vertices[i].predecessor = -1;
     }
 
     return G;
@@ -141,7 +143,7 @@ void bfs(Graph *G, int s)
         // Dequeue a node u
         int u = dequeue(Q);
         // Print the data of the dequeued node that would now be explored
-        printf("%d %d, ",u, G->vertices[u].dist);
+        //printf("%d %d, ",u, G->vertices[u].dist);
         // For each white node v adjacent to u:
         for (int v = 0; v < G->V; v++)
         {
@@ -150,6 +152,7 @@ void bfs(Graph *G, int s)
                 // Mark v as grey
                 G->vertices[v].c = GREY;
                 G->vertices[v].dist = G->vertices[u].dist + 1;
+                G->vertices[v].predecessor = u;
                 // Enqueue v
                 enqueue(Q,v);
 
@@ -164,6 +167,15 @@ void bfs(Graph *G, int s)
 void add_edge_adj_matrix(Graph *G, int u, int v)
 {
     G->adjacency_matrix[u][v] = 1;
+}
+
+void find_target(Graph* G, int s, int t){
+    bfs(G,s);
+    int node = t;
+    while(node != -1){
+        printf("%d <-", node);
+        node = G->vertices[node].predecessor;
+    }
 }
 
 int main()
@@ -181,7 +193,8 @@ int main()
         add_edge_adj_matrix(G, u, v);
     }
     fclose(fp);
-    bfs(G, 0);
+    //bfs(G, 0);
+    find_target(G,0,6);
 
     return 0;
 }
