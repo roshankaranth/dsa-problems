@@ -20,6 +20,7 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct linked_list_node {
     int data;
@@ -39,17 +40,21 @@ struct Graph *get_graph(int V, int E)
     G->V = V;
     G->E = E;
     // Allocate memory for the adjacency matrix (V x V int array)
-
+    G->adjacency_matrix = (int**)malloc(sizeof(int*)*V);
     // Allocate memory for each row of the adjacency matrix
     for (int i = 0; i < V; i++)
     {
-
+        G->adjacency_matrix[i] = (int*)malloc(sizeof(int)*V);
+        memset(G->adjacency_matrix[i],0,V);
         // Initialize the allocated row to 0 (Do not visit all elements. Use the <string.h> function bzero or memset)
 
     }
     // Allocate memory for the adjacency list  (V linked lists of type ll_node)
-
+    G->adjacency_list = (ll_node**)malloc(sizeof(ll_node*)*V);
     // Initialize all the linked lists to NULL (Will bzero or memset work here? Why or why not?)
+    for(int i = 0 ; i < V ; i++){
+        G->adjacency_list[i] = NULL;
+    }
 
     return G;
 }
@@ -57,13 +62,20 @@ struct Graph *get_graph(int V, int E)
 void add_edge_adj_matrix(struct Graph *G, int u, int v) 
 {
     // Add an edge from u to v in the adjacency matrix
+    G->adjacency_matrix[u][v] = 1;
 
 }
 
 void add_edge_adj_list(struct Graph *G, int u, int v) 
 {
     // Add an edge from u to v in the adjacency list. Use the ll_node structure defined above
+    ll_node* temp = G->adjacency_list[u];
+    ll_node* node = (ll_node*)malloc(sizeof(ll_node));
+    node->data = v;
+    node->next = NULL;
 
+    G->adjacency_list[u] = node;
+    node->next = temp;
 }
 
 void print_adj_matrix(struct Graph *G) 

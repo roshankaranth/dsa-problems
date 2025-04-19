@@ -11,7 +11,7 @@ While the queue is not empty:
 */
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 // Queue
 typedef struct linked_list_node
 {
@@ -107,12 +107,19 @@ Graph *get_graph(int V, int E)
     G->V = V;
     G->E = E;
     // Allocate memory for the adjacency matrix (V x V int array)
-
+    G->adjacency_matrix = (int**)malloc(sizeof(int*)*V);
     // Allocate memory for each row of the adjacency matrix
-
+    for(int i = 0 ; i < V ; i++){
+        G->adjacency_matrix[i] = (int*)malloc(sizeof(int)*V);
+        memset(G->adjacency_matrix[i],0,V);
+    }
     // Allocate memory for the vertices array (Array of |V| graph_nodes)
-
+    G->vertices = (graph_node*)malloc(sizeof(graph_node)*V);
     // Initialize all the vertices to WHITE
+    for(int i = 0 ; i < V ; i++){
+        G->vertices[i].c = WHITE;
+        G->vertices[i].data = i;
+    }
 
     return G;
 }
@@ -121,29 +128,31 @@ Graph *get_graph(int V, int E)
 void bfs(Graph *G, int s)
 {
     // Initialize the queue
-
+    queue* Q = get_queue();
     // Mark the source s as grey and enqueue it
-
-
+    G->vertices[s].c = GREY;
+    enqueue(Q,s);
     // While the queue is not empty:
     while (!is_empty(Q))
     {
         // Dequeue a node u
-
+        int u = dequeue(Q);
         // Print the data of the dequeued node that would now be explored
-
+        printf("%d ",u);
         // For each white node v adjacent to u:
         for (int v = 0; v < G->V; v++)
         {
-            if (/* v is adjacent to u and is white */)
+            if (G->adjacency_matrix[u][v] == 1 && G->vertices[v].c == WHITE)
             {
                 // Mark v as grey
-
+                G->vertices[v].c = GREY;
                 // Enqueue v
+                enqueue(Q,v);
 
             }
         }
         // Mark u as black
+        G->vertices[u].c = BLACK;
 
     }
 }
@@ -156,7 +165,7 @@ void add_edge_adj_matrix(Graph *G, int u, int v)
 int main()
 {
     // You can change the file name to input1.txt or input2.txt to test your code for different graphs
-    FILE *fp = fopen("input2.txt", "r");
+    FILE *fp = fopen("input3.txt", "r");
     int V, E;
     fscanf(fp, "%d", &V);
     fscanf(fp, "%d", &E);
