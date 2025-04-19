@@ -13,6 +13,9 @@ While the stack is not empty:
 #include <stdlib.h>
 #include <string.h>
 // stack
+
+int timer = 0;
+
 typedef struct linked_list_node
 {
     int data;
@@ -72,8 +75,10 @@ typedef struct graph_node
 {
     int data;
     color c;
-    int dist;
     int predecessor;
+    int discovery_time;
+    int finsh_time;
+
 } graph_node;
 
 // Graph
@@ -108,8 +113,9 @@ Graph *get_graph(int V, int E)
     for(int i = 0 ; i < V ; i++){
         G->vertices[i].c = WHITE;
         G->vertices[i].data = i;
-        G->vertices[i].dist = 2*V;
         G->vertices[i].predecessor = -1;
+        G->vertices[i].discovery_time = 0;
+        G->vertices[i].finsh_time = 0;
     }
 
     return G;
@@ -122,7 +128,6 @@ void dfs(Graph *G, int s)
     stack* Q = get_stack();
     // Mark the source s as grey and enstack it
     G->vertices[s].c = GREY;
-    G->vertices[s].dist = 0;
     push(Q,s);
     // While the stack is not empty:
     while (!is_empty(Q))
@@ -138,7 +143,6 @@ void dfs(Graph *G, int s)
             {
                 // Mark v as grey
                 G->vertices[v].c = GREY;
-                G->vertices[v].dist = G->vertices[u].dist + 1;
                 G->vertices[v].predecessor = u;
                 // Enstack v
                 push(Q,v);
@@ -151,13 +155,38 @@ void dfs(Graph *G, int s)
     }
 }
 
+void recDFSVisit(Graph* G, int u){
+    printf("%d ",u);
+    G->vertices[u].discovery_time = timer;
+    timer++;
+
+    for(int i = 0 ; i < G->V ; i++){
+        if(G->adjacency_matrix[u][i] == 1 && G->vertices[i].c == WHITE){
+            G->vertices[i].predecessor = u;
+            G->vertices[i].c = GREY;
+            recDFSVisit(G,i);
+        }
+    }
+    G->vertices[u].c = BLACK;
+    G->vertices[u].finsh_time = timer;
+}
+
+void recDFS(Graph *G){
+    for(int i = 0 ; i < G->V ; i++){
+        if(G->vertices[i].c == WHITE){
+            G->vertices[i].c = GREY;
+            recDFSVisit(G,i);
+        }
+    }
+}
+
 void add_edge_adj_matrix(Graph *G, int u, int v)
 {
     G->adjacency_matrix[u][v] = 1;
 }
 
 void find_target(Graph* G, int s, int t){
-    bfs(G,s);
+    dfs(G,s);
     int node = t;
     while(node != -1){
         printf("%d <-", node);
@@ -180,8 +209,9 @@ int main()
         add_edge_adj_matrix(G, u, v);
     }
     fclose(fp);
-    bfs(G, 0);
+    //dfs(G, 0);
     //find_target(G,0,6);
-
+    printf("\n");
+    recDFS(G);
     return 0;
 }
